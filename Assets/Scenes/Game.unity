@@ -545,8 +545,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549275556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.046, y: 0.775, z: 0}
-  m_LocalScale: {x: 1.0764041, y: 1.144, z: 1}
+  m_LocalPosition: {x: -0.09, y: 0.66, z: 0}
+  m_LocalScale: {x: 1.1251084, y: 1.2163078, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -878,6 +878,7 @@ GameObject:
   - component: {fileID: 1413269410}
   - component: {fileID: 1413269409}
   - component: {fileID: 1413269412}
+  - component: {fileID: 1413269413}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1010,6 +1011,25 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!95 &1413269413
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413269408}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c97f771bd7997854981ff3a33649834f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1553767629 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
@@ -1323,6 +1343,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
+        type: 3}
+      propertyPath: _uiManager
+      value: 
+      objectReference: {fileID: 691604739}
+    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
+        type: 3}
+      propertyPath: _audioSource
+      value: 
+      objectReference: {fileID: 159298315}
+    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
+        type: 3}
+      propertyPath: _laserSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
+        type: 3}
+      propertyPath: _explosion
+      value: 
+      objectReference: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
+        type: 3}
+      propertyPath: _speed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
+        type: 3}
+      propertyPath: _turbo
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
+        type: 3}
+      propertyPath: _speedBoost
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6487133432669819753, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1378,26 +1433,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
-        type: 3}
-      propertyPath: _uiManager
-      value: 
-      objectReference: {fileID: 691604739}
-    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
-        type: 3}
-      propertyPath: _audioSource
-      value: 
-      objectReference: {fileID: 159298315}
-    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
-        type: 3}
-      propertyPath: _laserSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-    - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
-        type: 3}
-      propertyPath: _explosion
-      value: 
-      objectReference: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8, type: 3}
 --- !u!1001 &7740947866600682896

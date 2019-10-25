@@ -5,8 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 10f, _speedBoost = 20f;
+    private float _speed = 7f, _turbo = 15f, _speedBoost = 30f;
     private float _currentSpeed = 10f;
+    private bool _canTurbo = true;
+    private bool _speedBoostActive = false;
 
     [SerializeField]
     private int _currentHealth = 500, _startHealth = 500, _lives = 3;
@@ -58,9 +60,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _explosion;
 
+    private Animator _cameraAnim;
+
     // Start is called before the first frame update
     void Start()
     {
+        _cameraAnim = Camera.main.GetComponent<Animator>();
         transform.position = Vector3.zero;
         _currentSpeed = _speed;
         _shield = GameObject.FindGameObjectWithTag("Shield");
@@ -108,6 +113,15 @@ public class Player : MonoBehaviour
             newPosition.x = -newPosition.x;
             transform.position = newPosition;
         }
+
+        if (Input.GetKey(KeyCode.LeftShift)  && _canTurbo)
+        {
+            _currentSpeed = _turbo;
+        }
+        else if (!_speedBoostActive)
+        {
+            _currentSpeed = _speed;
+        }
     }
 
     void Fire()
@@ -153,6 +167,7 @@ public class Player : MonoBehaviour
         if(_currentHealth <= 0)
         {
             _lives--;
+            CameraShake();
             ShowDamage();
             _uiManager.UpdateLives(_lives);
             _currentHealth = _startHealth;
@@ -195,8 +210,10 @@ public class Player : MonoBehaviour
 
     IEnumerator SpeedBoostRoutine()
     {
+        _speedBoostActive = true;
         _currentSpeed = _speedBoost;
         yield return new WaitForSeconds(_secondsActive);
+        _speedBoostActive = false;
         _currentSpeed = _speed;
     }
 
@@ -228,6 +245,14 @@ public class Player : MonoBehaviour
         if(other.tag == "Enemy Laser")
         {
             Damage(other.GetComponent<Laser>().GetLaserDamage());
+        }
+    }
+
+    void CameraShake()
+    {
+        if (_cameraAnim)
+        {
+            _cameraAnim.SetTrigger("CameraShakeTrigger");
         }
     }
 }
