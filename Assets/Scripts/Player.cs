@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 7f, _turbo = 15f, _speedBoost = 30f;
     private float _currentSpeed = 10f;
-    private bool _canTurbo = true;
     private bool _speedBoostActive = false;
+    public bool canTurbo = true;
 
     [SerializeField]
     private int _currentHealth = 500, _startHealth = 500, _lives = 3;
@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _tripleShot;
     private bool isTripleShotActive = false;
+    private bool isUltraShotActive = false;
     [SerializeField]
     private int _maxAmmo = 15;
     private int _currentAmmo;
@@ -110,6 +111,8 @@ public class Player : MonoBehaviour
             _lastFire = Time.time + _coolDown;
         }
 
+        Debug.Log($"Can turbo: {canTurbo}");
+
     }
 
     private void CalculateMovement()
@@ -134,13 +137,24 @@ public class Player : MonoBehaviour
             transform.position = newPosition;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift)  && _canTurbo)
+        /*
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * */
+
+        if (Input.GetKey(KeyCode.LeftShift)  && canTurbo)
         {
             _currentSpeed = _turbo;
+            _uiManager.EmptyThrusterBar();
         }
         else if (!_speedBoostActive)
         {
             _currentSpeed = _speed;
+            _uiManager.FillThrusterBar();
         }
     }
 
@@ -253,6 +267,14 @@ public class Player : MonoBehaviour
         isTripleShotActive = false;
     }
 
+    // Secondary Powerup -- RARE
+    IEnumerator UltraShotRoutine()
+    {
+        isUltraShotActive = true;
+        yield return new WaitForSeconds(_secondsActive);
+        isUltraShotActive = false;
+    }
+
     IEnumerator SpeedBoostRoutine()
     {
         _speedBoostActive = true;
@@ -325,4 +347,5 @@ public class Player : MonoBehaviour
             _uiManager.UpdateLives(_lives);
         }
     }
+
 }

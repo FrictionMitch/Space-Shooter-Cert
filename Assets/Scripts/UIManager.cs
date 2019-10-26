@@ -24,6 +24,12 @@ public class UIManager : MonoBehaviour
     private Image _turboImage;
     [SerializeField]
     private float turboAmount { get; set; } = 1f;
+    [Tooltip("Inverted speed of thrust USE")]
+    [SerializeField]
+    private float turboEmpty = 2f;
+    [Tooltip("Inverted speed of thrust FILL")]
+    [SerializeField]
+    private float turboFill = 5f;
 
 
     private bool _isGameOver = false;
@@ -109,9 +115,29 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SetThrusterBar()
+    public void FillThrusterBar()
     {
-        _turboImage.fillAmount = Time.deltaTime;
+        if(_turboImage.fillAmount < 1)
+        {
+            _turboImage.fillAmount += (Time.deltaTime/5);
+        }
+        
+    }
+
+    public void EmptyThrusterBar()
+    {
+        StartCoroutine(ThrusterRoutine());
+        _turboImage.fillAmount -= (Time.deltaTime/2);
+    }
+
+    IEnumerator ThrusterRoutine()
+    {
+        if(_turboImage.fillAmount <= Mathf.Epsilon)
+        {
+            _player.canTurbo = false;
+            yield return new WaitForSeconds(5);
+            _player.canTurbo = true;
+        }
     }
 
     private void SetAmmoText()
