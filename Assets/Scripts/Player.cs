@@ -310,4 +310,9 @@ public class Player : MonoBehaviour
         }
         return _currentAmmo;
     }
+
+    public void FillAmmo()
+    {
+        _currentAmmo = _maxAmmo;
+    }
 }

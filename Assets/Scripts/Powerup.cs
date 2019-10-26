@@ -45,12 +45,22 @@ public class Powerup : MonoBehaviour
                 {
                     case 0:
                         player.EnableTripleShot();
+                        player.FillAmmo();
                         break;
                     case 1:
                         player.EnableSpeedBoost();
                         break;
                     case 2:
                         player.EnableShield();
+                        break;
+                    case 3:
+                        player.FillAmmo();
+                        break;
+                    case 4:
+                        // add health
+                        break;
+                    case 5:
+                        // enable another powerup
                         break;
 
                 }
