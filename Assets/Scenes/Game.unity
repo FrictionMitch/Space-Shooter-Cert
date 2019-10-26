@@ -893,12 +893,12 @@ MonoBehaviour:
   - {fileID: 8451775468333580619, guid: 68cb87027d1abd0489aad8843700cc53, type: 3}
   - {fileID: 5311150040135042757, guid: f04a7a4270391d141b70be4132b08c5d, type: 3}
   - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
-  - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
-  - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
-  - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
-  - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
-  - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
-  - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
+  - {fileID: 8612439050879936282, guid: b471d81347118464b956672dbca2bad7, type: 3}
+  - {fileID: 8612439050879936282, guid: b471d81347118464b956672dbca2bad7, type: 3}
+  - {fileID: 8612439050879936282, guid: b471d81347118464b956672dbca2bad7, type: 3}
+  - {fileID: 8612439050879936282, guid: b471d81347118464b956672dbca2bad7, type: 3}
+  - {fileID: 8612439050879936282, guid: b471d81347118464b956672dbca2bad7, type: 3}
+  - {fileID: 8612439050879936282, guid: b471d81347118464b956672dbca2bad7, type: 3}
   _secondsBetweenEnemySpawn: 5
   _minPowerup: 3
   _maxPowerup: 7

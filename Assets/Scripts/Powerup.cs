@@ -58,6 +58,7 @@ public class Powerup : MonoBehaviour
                         break;
                     case 4:
                         // add health
+                        player.AddLife();
                         break;
                     case 5:
                         // enable another powerup

@@ -215,7 +215,6 @@ public class Player : MonoBehaviour
             ShowDamage();
             _uiManager.UpdateLives(_lives);
             _currentHealth = _startHealth;
-            Debug.Log($"Lives: {_lives}");
             if(_lives <= 0)
             {
                 AudioSource.PlayClipAtPoint(_explosion, Camera.main.transform.position);
@@ -314,5 +313,16 @@ public class Player : MonoBehaviour
     public void FillAmmo()
     {
         _currentAmmo = _maxAmmo;
+    }
+
+    public void AddLife()
+    {
+        // add life
+        if(_lives < 3)
+        {
+            _damageObjects[_lives-1].SetActive(false);
+            _lives++;
+            _uiManager.UpdateLives(_lives);
+        }
     }
 }

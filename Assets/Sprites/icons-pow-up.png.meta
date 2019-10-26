@@ -16,7 +16,7 @@ TextureImporter:
     second: icons-pow-up_3
   - first:
       213: -8148461559354207307
-    second: icons-pow-up_4
+    second: Health_0
   - first:
       213: 612701557797567780
     second: icons-pow-up_5
@@ -34,7 +34,7 @@ TextureImporter:
     second: icons-pow-up_9
   - first:
       213: 6304193016017225022
-    second: icons-pow-up_10
+    second: Health_1
   - first:
       213: -6344013811041803900
     second: icons-pow-up_11
@@ -254,7 +254,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_4
+      name: Health_0
       rect:
         serializedVersion: 2
         x: 340
@@ -380,7 +380,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_10
+      name: Health_1
       rect:
         serializedVersion: 2
         x: 330
