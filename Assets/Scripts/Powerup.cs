@@ -62,6 +62,7 @@ public class Powerup : MonoBehaviour
                         break;
                     case 5:
                         // enable another powerup
+                        player.EnableMinis();
                         break;
 
                 }

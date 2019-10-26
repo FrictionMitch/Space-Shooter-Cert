@@ -29,8 +29,11 @@ public class Player : MonoBehaviour
     private bool isTripleShotActive = false;
     private bool isUltraShotActive = false;
     [SerializeField]
+    private GameObject _minis;
+    [SerializeField]
     private int _maxAmmo = 15;
     private int _currentAmmo;
+    [SerializeField]
     private GameObject ProjectileParent;
 
     [SerializeField]
@@ -79,19 +82,28 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
 
+    [SerializeField]
+    private bool isMini = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         _currentAmmo = _maxAmmo;
         _cameraAnim = Camera.main.GetComponent<Animator>();
-        transform.position = Vector3.zero;
+        if (!isMini)
+        {
+            _minis.SetActive(false);
+            
+            transform.position = Vector3.zero;
+            _uiManager.UpdateLives(_lives);
+            _shield.SetActive(false);
+            _score = 0;
+
+        }
         _currentSpeed = _speed;
         _currentShieldStrength = _shieldStrength;
         _shieldAnim = _shield.GetComponent<Animator>();
-        _uiManager.UpdateLives(_lives);
-        _shield.SetActive(false);
-        _score = 0;
 
         foreach(GameObject damageObject in _damageObjects)
         {
@@ -107,54 +119,53 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && Time.time > _lastFire)
         {
             Fire();
-            _currentAmmo--;
+            if (!isMini)
+            {
+                _currentAmmo--;
+            }
             _lastFire = Time.time + _coolDown;
         }
-
-        Debug.Log($"Can turbo: {canTurbo}");
 
     }
 
     private void CalculateMovement()
     {
-        float horizontalMovement = Input.GetAxis("Horizontal");
-        float verticalMovement = Input.GetAxis("Vertical");
-
-        Vector3 direction = new Vector3(horizontalMovement, verticalMovement, transform.position.z);
-
-        transform.Translate(direction * _currentSpeed * Time.deltaTime);
-
-        Vector3 newPosition = transform.position;
-
-        // if player position.y > top of screen
-        newPosition.y = Mathf.Clamp(newPosition.y, _bottomOfScreen, _topOfScreen);
-        transform.position = newPosition;
-
-        // if player position.x ... wrap
-        if (transform.position.x <= _leftOfScreen || transform.position.x >= _rightOfScreen)
+        if (!isMini)
         {
-            newPosition.x = -newPosition.x;
+
+            float horizontalMovement = Input.GetAxis("Horizontal");
+            float verticalMovement = Input.GetAxis("Vertical");
+
+            Vector3 direction = new Vector3(horizontalMovement, verticalMovement, transform.position.z);
+
+            transform.Translate(direction * _currentSpeed * Time.deltaTime);
+
+            Vector3 newPosition = transform.position;
+
+            // if player position.y > top of screen
+            newPosition.y = Mathf.Clamp(newPosition.y, _bottomOfScreen, _topOfScreen);
             transform.position = newPosition;
+
+            // if player position.x ... wrap
+            if (transform.position.x <= _leftOfScreen || transform.position.x >= _rightOfScreen)
+            {
+                newPosition.x = -newPosition.x;
+                transform.position = newPosition;
+            }
         }
 
-        /*
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * */
-
-        if (Input.GetKey(KeyCode.LeftShift)  && canTurbo)
+        if (!isMini)
         {
-            _currentSpeed = _turbo;
-            _uiManager.EmptyThrusterBar();
-        }
-        else if (!_speedBoostActive)
-        {
-            _currentSpeed = _speed;
-            _uiManager.FillThrusterBar();
+            if (Input.GetKey(KeyCode.LeftShift)  && canTurbo)
+            {
+                _currentSpeed = _turbo;
+                _uiManager.EmptyThrusterBar();
+            }
+            else if (!_speedBoostActive)
+            {
+                _currentSpeed = _speed;
+                _uiManager.FillThrusterBar();
+            }
         }
     }
 
@@ -176,9 +187,10 @@ public class Player : MonoBehaviour
                 projectile = Instantiate(_singleProjectile, startPosition, Quaternion.identity);
             }
 
-            // laser sound
-            _audioSource.PlayOneShot(_laserSound);
+            AudioSource.PlayClipAtPoint(_laserSound, Camera.main.transform.position);
 
+            if (!isMini)
+            {
 
             //check for projectileParent folder
             if (!GameObject.Find("ProjectileParent"))
@@ -188,56 +200,60 @@ public class Player : MonoBehaviour
             }
             else
             {
-                projectile.transform.parent = ProjectileParent.transform;
+                    projectile.transform.parent = ProjectileParent.transform;
+            }
             }
         }
     }
 
     public void Damage(int amount)
     {
-        if (_isShieldActive)
+        if (!isMini)
         {
-            _currentShieldStrength--;
-            switch (_currentShieldStrength)
+            if (_isShieldActive)
             {
-                case 2:
-                    _shield.GetComponent<SpriteRenderer>().color = Color.white;
-                    break;
-                case 1:
-                    _shield.GetComponent<SpriteRenderer>().color = Color.red;
-                    break;
-                default:
-                    _shield.GetComponent<SpriteRenderer>().color = Color.green;
-                    break;
-
-            }
-            _shieldAnim.SetTrigger("HitTrigger");
-
-            if (_currentShieldStrength <= 0)
-            {
-                _isShieldActive = false;
-                _shield.SetActive(false);
-            }
-            return;
-        }
-        _currentHealth -= amount;
-
-        if(_currentHealth <= 0)
-        {
-            _lives--;
-            CameraShake();
-            ShowDamage();
-            _uiManager.UpdateLives(_lives);
-            _currentHealth = _startHealth;
-            if(_lives <= 0)
-            {
-                AudioSource.PlayClipAtPoint(_explosion, Camera.main.transform.position);
-                _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
-                if (_spawnManager)
+                _currentShieldStrength--;
+                switch (_currentShieldStrength)
                 {
-                    _spawnManager.OnPlayerDeath();
+                    case 2:
+                        _shield.GetComponent<SpriteRenderer>().color = Color.white;
+                        break;
+                    case 1:
+                        _shield.GetComponent<SpriteRenderer>().color = Color.red;
+                        break;
+                    default:
+                        _shield.GetComponent<SpriteRenderer>().color = Color.green;
+                        break;
+
                 }
-                Destroy(this.gameObject);
+                _shieldAnim.SetTrigger("HitTrigger");
+
+                if (_currentShieldStrength <= 0)
+                {
+                    _isShieldActive = false;
+                    _shield.SetActive(false);
+                }
+                return;
+            }
+            _currentHealth -= amount;
+
+            if (_currentHealth <= 0)
+            {
+                _lives--;
+                CameraShake();
+                ShowDamage();
+                _uiManager.UpdateLives(_lives);
+                _currentHealth = _startHealth;
+                if (_lives <= 0)
+                {
+                    AudioSource.PlayClipAtPoint(_explosion, Camera.main.transform.position);
+                    _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+                    if (_spawnManager)
+                    {
+                        _spawnManager.OnPlayerDeath();
+                    }
+                    Destroy(this.gameObject);
+                }
             }
         }
     }
@@ -260,6 +276,15 @@ public class Player : MonoBehaviour
         _shield.GetComponent<SpriteRenderer>().color = Color.green;
     }
 
+    public void EnableMinis()
+    {
+        if (!isMini)
+        {
+            FillAmmo();
+            StartCoroutine(UltraShotRoutine());
+        }
+    }
+
     IEnumerator TripleShotRoutine()
     {
         isTripleShotActive = true;
@@ -270,9 +295,11 @@ public class Player : MonoBehaviour
     // Secondary Powerup -- RARE
     IEnumerator UltraShotRoutine()
     {
-        isUltraShotActive = true;
+        //isUltraShotActive = true;
+        _minis.SetActive(true);
         yield return new WaitForSeconds(_secondsActive);
-        isUltraShotActive = false;
+        _minis.SetActive(false);
+        //isUltraShotActive = false;
     }
 
     IEnumerator SpeedBoostRoutine()
@@ -301,9 +328,12 @@ public class Player : MonoBehaviour
 
     private void ShowDamage()
     {
-        if(_damageObjects.Length >= _lives && _lives > 0)
+        if (!isMini)
         {
-            _damageObjects[_lives - 1].SetActive(true);
+            if(_damageObjects.Length >= _lives && _lives > 0)
+            {
+                _damageObjects[_lives - 1].SetActive(true);
+            }
         }
     }
 

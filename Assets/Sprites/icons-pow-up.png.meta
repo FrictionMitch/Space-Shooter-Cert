@@ -19,7 +19,7 @@ TextureImporter:
     second: Health_0
   - first:
       213: 612701557797567780
-    second: icons-pow-up_5
+    second: UltraPowerup_0
   - first:
       213: -6828402468085963043
     second: Ammo_1
@@ -37,7 +37,7 @@ TextureImporter:
     second: Health_1
   - first:
       213: -6344013811041803900
-    second: icons-pow-up_11
+    second: UltraPowerup_1
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -275,7 +275,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_5
+      name: UltraPowerup_0
       rect:
         serializedVersion: 2
         x: 623
@@ -401,10 +401,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_11
+      name: UltraPowerup_1
       rect:
         serializedVersion: 2
-        x: 613
+        x: 609
         y: 132
         width: 249
         height: 249
