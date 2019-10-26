@@ -298,8 +298,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1da949aaa7b5a0428409e5006fb72cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
-  _speedBoost: 20
+  _speed: 7
+  _turbo: 15
+  _speedBoost: 30
   _currentHealth: 0
   _startHealth: 0
   _lives: 3
@@ -314,10 +315,15 @@ MonoBehaviour:
   _secondsActive: 5
   _projectileOffset: 1
   _coolDown: 0.15
+  _shieldStrength: 3
+  _shield: {fileID: 1792354168}
   _uiManager: {fileID: 0}
   _damageObjects:
   - {fileID: 7051218604022696563}
   - {fileID: 7929930097194015376}
+  _audioSource: {fileID: 0}
+  _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _explosion: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
 --- !u!61 &142391726
 BoxCollider2D:
   m_ObjectHideFlags: 0

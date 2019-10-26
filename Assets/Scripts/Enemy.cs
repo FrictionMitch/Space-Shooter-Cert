@@ -85,18 +85,15 @@ public class Enemy : MonoBehaviour
     {
         switch (other.tag){
             case "Laser":
-                // Add points
                 
                 if (_player)
                 {
                     _player.AddScore(_points);
                 }
                 Destroy(other.gameObject);
-                //Destroy(this.gameObject, 0.01f);
                 EnemyDeath();
                 break;
             case "Player":
-                //Damage Player
                 if (_player)
                 {
                     _player.Damage(_kamakazeDamage);

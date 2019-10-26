@@ -23,8 +23,13 @@ public class Player : MonoBehaviour
 
     [Header("Projectile")]
     [SerializeField]
-    private GameObject _singleProjectile, _tripleShot;
+    private GameObject _singleProjectile;
+    [SerializeField]
+    private GameObject _tripleShot;
     private bool isTripleShotActive = false;
+    [SerializeField]
+    private int _maxAmmo = 15;
+    private int _currentAmmo;
     private GameObject ProjectileParent;
 
     [SerializeField]
@@ -39,15 +44,23 @@ public class Player : MonoBehaviour
     private float _coolDown = 0.5f;
     private float _lastFire = 0;
 
-    private SpawnManager _spawnManager;
-
-    private bool isShieldActive = false;
+    [Header("Shield")]
+    [SerializeField]
+    [Tooltip("Number of hits shield can take before destroyed")]
+    private int _shieldStrength = 3;
+    [SerializeField]
     private GameObject _shield;
+    public int _currentShieldStrength;
+    private bool _isShieldActive = false;
+    [SerializeField]
+    Color[] colors;
 
     private int _score;
 
+    [Space(20)]
     [SerializeField]
     private UIManager _uiManager;
+    [Space(20)]
 
     [SerializeField]
     private GameObject[] _damageObjects;
@@ -61,16 +74,22 @@ public class Player : MonoBehaviour
     private AudioClip _explosion;
 
     private Animator _cameraAnim;
+    private Animator _shieldAnim;
+
+    private SpawnManager _spawnManager;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        _currentAmmo = _maxAmmo;
         _cameraAnim = Camera.main.GetComponent<Animator>();
         transform.position = Vector3.zero;
         _currentSpeed = _speed;
-        _shield = GameObject.FindGameObjectWithTag("Shield");
-        _shield.GetComponent<Renderer>().enabled = false;
+        _currentShieldStrength = _shieldStrength;
+        _shieldAnim = _shield.GetComponent<Animator>();
         _uiManager.UpdateLives(_lives);
+        _shield.SetActive(false);
         _score = 0;
 
         foreach(GameObject damageObject in _damageObjects)
@@ -87,6 +106,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && Time.time > _lastFire)
         {
             Fire();
+            _currentAmmo--;
             _lastFire = Time.time + _coolDown;
         }
 
@@ -126,44 +146,68 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        Vector3 startPosition = transform.position;
-        startPosition.y += _projectileOffset;
-        GameObject projectile;
-        if (isTripleShotActive)
+        if(_currentAmmo > 0)
         {
-            projectile = Instantiate(_tripleShot, transform.position, Quaternion.identity);
-        }
-        else
-        {
-            projectile = Instantiate(_singleProjectile, startPosition, Quaternion.identity);
-        }
+            Vector3 startPosition = transform.position;
+            startPosition.y += _projectileOffset;
+            GameObject projectile;
 
-        // laser sound
-        _audioSource.PlayOneShot(_laserSound);
+            // check ammo
+            if (isTripleShotActive)
+            {
+                projectile = Instantiate(_tripleShot, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                projectile = Instantiate(_singleProjectile, startPosition, Quaternion.identity);
+            }
+
+            // laser sound
+            _audioSource.PlayOneShot(_laserSound);
 
 
-        //check for projectileParent folder
-        if (!GameObject.Find("ProjectileParent"))
-        {
-            ProjectileParent = new GameObject("ProjectileParent");
-            projectile.transform.parent = ProjectileParent.transform;
-        }
-        else
-        {
-            projectile.transform.parent = ProjectileParent.transform;
+            //check for projectileParent folder
+            if (!GameObject.Find("ProjectileParent"))
+            {
+                ProjectileParent = new GameObject("ProjectileParent");
+                projectile.transform.parent = ProjectileParent.transform;
+            }
+            else
+            {
+                projectile.transform.parent = ProjectileParent.transform;
+            }
         }
     }
 
     public void Damage(int amount)
     {
-        if (isShieldActive)
+        if (_isShieldActive)
         {
-            isShieldActive = false;
-            _shield.GetComponent<Renderer>().enabled = false;
+            _currentShieldStrength--;
+            switch (_currentShieldStrength)
+            {
+                case 2:
+                    _shield.GetComponent<SpriteRenderer>().color = Color.white;
+                    break;
+                case 1:
+                    _shield.GetComponent<SpriteRenderer>().color = Color.red;
+                    break;
+                default:
+                    _shield.GetComponent<SpriteRenderer>().color = Color.green;
+                    break;
+
+            }
+            _shieldAnim.SetTrigger("HitTrigger");
+
+            if (_currentShieldStrength <= 0)
+            {
+                _isShieldActive = false;
+                _shield.SetActive(false);
+            }
             return;
         }
-
         _currentHealth -= amount;
+
         if(_currentHealth <= 0)
         {
             _lives--;
@@ -197,8 +241,10 @@ public class Player : MonoBehaviour
 
     public void EnableShield()
     {
-        isShieldActive = true;
-        _shield.GetComponent<Renderer>().enabled = true;
+        _isShieldActive = true;
+        _currentShieldStrength = _shieldStrength;
+        _shield.SetActive(true);
+        _shield.GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     IEnumerator TripleShotRoutine()
@@ -254,5 +300,14 @@ public class Player : MonoBehaviour
         {
             _cameraAnim.SetTrigger("CameraShakeTrigger");
         }
+    }
+
+    public int GetAmmo()
+    {
+        if(_currentAmmo <= 0)
+        {
+            _currentAmmo = 0;
+        }
+        return _currentAmmo;
     }
 }

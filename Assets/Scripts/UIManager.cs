@@ -16,8 +16,19 @@ public class UIManager : MonoBehaviour
     private Player _player;
     [SerializeField]
     private float _flickerDelay = 0.5f;
+
+    [SerializeField]
+    private Text _ammoText;
+
+    [SerializeField]
+    private Image _turboImage;
+    [SerializeField]
+    private float turboAmount { get; set; } = 1f;
+
+
     private bool _isGameOver = false;
 
+    
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +43,7 @@ public class UIManager : MonoBehaviour
         if (_player)
         {
             _scoreText.text = ($"Score: {_player.GetScore()}");
+            SetAmmoText();
         }
         _gameOverText.gameObject.SetActive(GameOver(_player.GetLives()));
 
@@ -96,4 +108,23 @@ public class UIManager : MonoBehaviour
             Application.Quit();
         }
     }
+
+    public void SetThrusterBar()
+    {
+        _turboImage.fillAmount = Time.deltaTime;
+    }
+
+    private void SetAmmoText()
+    {
+        _ammoText.text = $"x {_player.GetAmmo()}";
+        if(_player.GetAmmo() == 0)
+        {
+            _ammoText.GetComponent<Animator>().SetBool("AmmoEmpty", true);
+        }
+        else
+        {
+            _ammoText.GetComponent<Animator>().SetBool("AmmoEmpty", false);
+        }
+    }
+
 }
