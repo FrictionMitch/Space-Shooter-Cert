@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour
     {
         if(_turboImage.fillAmount < 1)
         {
-            _turboImage.fillAmount += (Time.deltaTime/5);
+            _turboImage.fillAmount += (Time.deltaTime/turboFill);
         }
         
     }
@@ -127,7 +127,7 @@ public class UIManager : MonoBehaviour
     public void EmptyThrusterBar()
     {
         StartCoroutine(ThrusterRoutine());
-        _turboImage.fillAmount -= (Time.deltaTime/2);
+        _turboImage.fillAmount -= (Time.deltaTime/turboEmpty);
     }
 
     IEnumerator ThrusterRoutine()
@@ -142,7 +142,7 @@ public class UIManager : MonoBehaviour
 
     private void SetAmmoText()
     {
-        _ammoText.text = $"x {_player.GetAmmo()}";
+        _ammoText.text = $"x {_player.GetAmmo()}/{_player.GetMaxAmmo()}";
         if(_player.GetAmmo() == 0)
         {
             _ammoText.GetComponent<Animator>().SetBool("AmmoEmpty", true);

@@ -362,6 +362,11 @@ public class Player : MonoBehaviour
         return _currentAmmo;
     }
 
+    public int GetMaxAmmo()
+    {
+        return _maxAmmo;
+    }
+
     public void FillAmmo()
     {
         _currentAmmo = _maxAmmo;
