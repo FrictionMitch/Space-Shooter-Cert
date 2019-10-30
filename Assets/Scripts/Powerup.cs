@@ -7,6 +7,8 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private float _speed = 3f;
     [SerializeField]
+    private float _magnetSpeed = 6f;
+    [SerializeField]
     private float _bottomOfScreen = -6f;
     [SerializeField]
     private int _powerupID = 0;
@@ -15,11 +17,33 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioClip _powerUpSound;
 
+    private Player _player;
+
+    private bool _wasCalled = false;
+
+    private void Start()
+    {
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
+
 
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _wasCalled = true;
+        }
+        if (!_wasCalled)
+        {
+            Movement();
+        }
+        else
+        {
+            MoveToPlayer();
+        }
+
+        
     }
 
     void Movement()
@@ -36,33 +60,33 @@ public class Powerup : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            Player player = other.GetComponent<Player>();
-            if (player)
+            //Player player = other.GetComponent<Player>();
+            if (_player)
             {
                 AudioSource.PlayClipAtPoint(_powerUpSound, Camera.main.transform.position);
 
                 switch (_powerupID)
                 {
                     case 0:
-                        player.EnableTripleShot();
-                        player.FillAmmo();
+                        _player.EnableTripleShot();
+                        _player.FillAmmo();
                         break;
                     case 1:
-                        player.EnableSpeedBoost();
+                        _player.EnableSpeedBoost();
                         break;
                     case 2:
-                        player.EnableShield();
+                        _player.EnableShield();
                         break;
                     case 3:
-                        player.FillAmmo();
+                        _player.FillAmmo();
                         break;
                     case 4:
                         // add health
-                        player.AddLife();
+                        _player.AddLife();
                         break;
                     case 5:
                         // enable another powerup
-                        player.EnableMinis();
+                        _player.EnableMinis();
                         break;
 
                 }
@@ -70,5 +94,12 @@ public class Powerup : MonoBehaviour
             Destroy(this.gameObject, 0.01f);
         }
         
+    }
+
+    private void MoveToPlayer()
+    {
+        //_speed = _magnetSpeed;
+        float attractRate = _magnetSpeed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, attractRate);
     }
 }
