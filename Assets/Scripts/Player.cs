@@ -85,6 +85,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool isMini = false;
 
+    private bool _invertControls = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -137,8 +139,14 @@ public class Player : MonoBehaviour
             float verticalMovement = Input.GetAxis("Vertical");
 
             Vector3 direction = new Vector3(horizontalMovement, verticalMovement, transform.position.z);
-
-            transform.Translate(direction * _currentSpeed * Time.deltaTime);
+            if (!_invertControls)
+            {
+                transform.Translate(direction * _currentSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(-direction * _currentSpeed * Time.deltaTime);
+            }
 
             Vector3 newPosition = transform.position;
 
@@ -302,6 +310,14 @@ public class Player : MonoBehaviour
         //isUltraShotActive = false;
     }
 
+    // Negative Powerup
+    IEnumerator InvertControlsRoutine()
+    {
+        _invertControls = true;
+        yield return new WaitForSeconds(_secondsActive);
+        _invertControls = false;
+    }
+
     IEnumerator SpeedBoostRoutine()
     {
         _speedBoostActive = true;
@@ -381,6 +397,11 @@ public class Player : MonoBehaviour
             _lives++;
             _uiManager.UpdateLives(_lives);
         }
+    }
+
+    public void InvertControls()
+    {
+        StartCoroutine(InvertControlsRoutine());
     }
 
 }

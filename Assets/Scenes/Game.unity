@@ -906,6 +906,11 @@ MonoBehaviour:
   - {fileID: 8612439050879936282, guid: b471d81347118464b956672dbca2bad7, type: 3}
   - {fileID: 1701213764507077118, guid: ee86af3bb2325b84aa0b2af1f8a68c62, type: 3}
   - {fileID: 8451775468333580619, guid: 68cb87027d1abd0489aad8843700cc53, type: 3}
+  - {fileID: 423501337342854398, guid: bc17bd074dcbfa5468313b498eab07e3, type: 3}
+  - {fileID: 423501337342854398, guid: bc17bd074dcbfa5468313b498eab07e3, type: 3}
+  - {fileID: 423501337342854398, guid: bc17bd074dcbfa5468313b498eab07e3, type: 3}
+  - {fileID: 423501337342854398, guid: bc17bd074dcbfa5468313b498eab07e3, type: 3}
+  - {fileID: 423501337342854398, guid: bc17bd074dcbfa5468313b498eab07e3, type: 3}
   _secondsBetweenEnemySpawn: 5
   _minPowerup: 3
   _maxPowerup: 7
@@ -1769,7 +1774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1792354171, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6487133434089623138, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
         type: 3}
@@ -1792,6 +1797,10 @@ PrefabInstance:
     - target: {fileID: 924496454, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8, type: 3}
       propertyPath: isMini
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1792354169, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8, type: 3}

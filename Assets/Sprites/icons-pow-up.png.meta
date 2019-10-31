@@ -7,7 +7,7 @@ TextureImporter:
     second: Ammo_0
   - first:
       213: -4975875590155099226
-    second: icons-pow-up_1
+    second: InvertControls_Powerup_0
   - first:
       213: 1551720262503827736
     second: icons-pow-up_2
@@ -25,7 +25,7 @@ TextureImporter:
     second: Ammo_1
   - first:
       213: -771480261077809512
-    second: icons-pow-up_7
+    second: InvertControls_Powerup_1
   - first:
       213: 1665835797863406865
     second: icons-pow-up_8
@@ -191,7 +191,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_1
+      name: InvertControls_Powerup_0
       rect:
         serializedVersion: 2
         x: 340
@@ -317,7 +317,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_7
+      name: InvertControls_Powerup_1
       rect:
         serializedVersion: 2
         x: 330

@@ -88,7 +88,10 @@ public class Powerup : MonoBehaviour
                         // enable another powerup
                         _player.EnableMinis();
                         break;
-
+                    case 6:
+                        // invert controls (negative powerup)
+                        _player.InvertControls();
+                        break;
                 }
             }
             Destroy(this.gameObject, 0.01f);
