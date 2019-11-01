@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject ProjectileParent;
 
+    private List<GameObject> heatSeekerList;
+
     [SerializeField]
     private float _secondsActive = 5f;
 
@@ -94,6 +96,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        heatSeekerList = new List<GameObject>();
         _currentAmmo = _maxAmmo;
         _cameraAnim = Camera.main.GetComponent<Animator>();
         if (!isMini)
@@ -196,6 +199,7 @@ public class Player : MonoBehaviour
             else if (isHeatSeekerActive)
             {
                 projectile = Instantiate(_heatSeeker, transform.position, Quaternion.identity);
+                heatSeekerList.Add(projectile);
             }
             else
             {
@@ -207,16 +211,16 @@ public class Player : MonoBehaviour
             if (!isMini)
             {
 
-            //check for projectileParent folder
-            if (!GameObject.Find("ProjectileParent"))
-            {
-                ProjectileParent = new GameObject("ProjectileParent");
-                projectile.transform.parent = ProjectileParent.transform;
-            }
-            else
-            {
+                //check for projectileParent folder
+                if (!GameObject.Find("ProjectileParent"))
+                {
+                    ProjectileParent = new GameObject("ProjectileParent");
                     projectile.transform.parent = ProjectileParent.transform;
-            }
+                }
+                else
+                {
+                        projectile.transform.parent = ProjectileParent.transform;
+                }
             }
         }
     }
@@ -317,6 +321,10 @@ public class Player : MonoBehaviour
         isHeatSeekerActive = true;
         yield return new WaitForSeconds(_secondsActive);
         isHeatSeekerActive = false;
+        foreach(GameObject heatseeker in heatSeekerList)
+        {
+            Destroy(heatseeker);
+        }
     }
 
     // Secondary Powerup -- RARE
@@ -335,6 +343,7 @@ public class Player : MonoBehaviour
         _invertControls = true;
         yield return new WaitForSeconds(_secondsActive);
         _invertControls = false;
+        
     }
 
     IEnumerator SpeedBoostRoutine()

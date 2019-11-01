@@ -12,6 +12,9 @@ public class Laser : MonoBehaviour
     [SerializeField]
     private bool _canTrack = false;
 
+    [SerializeField]
+    private float _selfDestructTimer = 4f;
+
     private GameObject[] _enemies;
 
     // Start is called before the first frame update
@@ -23,7 +26,7 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_canTrack)
+        if (!_canTrack || _enemies[0].GetComponent<BoxCollider2D>().enabled == false)
         {
             transform.Translate(Vector3.up * Time.deltaTime * _speed);
         }
@@ -45,14 +48,21 @@ public class Laser : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
+        else
+        {
+            Destroy(this.gameObject, _selfDestructTimer);
+        }
     }
 
     void RotateTowards()
     {
-        Vector3 distance = _enemies[0].transform.position - this.transform.position;
-        float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(angle - 90, new Vector3(0, 0, 1));
-        transform.rotation = rotation;
+        if(_enemies != null)
+        {
+            Vector3 distance = _enemies[0].transform.position - this.transform.position;
+            float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(angle - 90, new Vector3(0, 0, 1));
+            transform.rotation = rotation;
+        }
     }
 
     public int GetLaserDamage()

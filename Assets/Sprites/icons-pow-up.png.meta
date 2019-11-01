@@ -10,7 +10,7 @@ TextureImporter:
     second: InvertControls_Powerup_0
   - first:
       213: 1551720262503827736
-    second: icons-pow-up_2
+    second: HeatSeeker_Powerup_0
   - first:
       213: 2170032146923545423
     second: icons-pow-up_3
@@ -28,7 +28,7 @@ TextureImporter:
     second: InvertControls_Powerup_1
   - first:
       213: 1665835797863406865
-    second: icons-pow-up_8
+    second: HeatSeeker_Powerup1
   - first:
       213: 217753681727325177
     second: icons-pow-up_9
@@ -212,7 +212,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_2
+      name: HeatSeeker_Powerup_0
       rect:
         serializedVersion: 2
         x: 623
@@ -338,7 +338,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons-pow-up_8
+      name: HeatSeeker_Powerup1
       rect:
         serializedVersion: 2
         x: 613
