@@ -38,9 +38,26 @@ public class Enemy : MonoBehaviour
     private float _fireDelay = 3f;
     private float _lastFire;
 
+    [SerializeField]
+    private bool _canDodge = false;
+
+    [SerializeField]
+    private bool _canShootBackwards = false;
+
+    [SerializeField]
+    private bool _canTargetPowerups = false;
+
+    [SerializeField]
+    private bool _canZigZag = true;
+
+    [SerializeField]
+    private int _minZigAmount = 1, _maxZigAmount = 5;
+    private int _zigAmount;
+
     // Start is called before the first frame update
     void Start()
     {
+        _zigAmount = Random.Range(_minZigAmount, _maxZigAmount);
         _audioSource = GetComponent<AudioSource>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (!_player)
@@ -62,9 +79,21 @@ public class Enemy : MonoBehaviour
     {
         Vector3 enemyPosition = this.transform.position;
 
-        transform.Translate(Vector3.down * Time.deltaTime * _speed);
+        ZigZag(enemyPosition);
 
-        if(transform.position.y <= _bottomOfScreen)
+        if(transform.position.x < _leftSideOfScreen)
+        {
+            enemyPosition.x = _rightSideOfScreen;
+            transform.position = enemyPosition;
+        }
+
+        if(transform.position.x > _rightSideOfScreen)
+        {
+            enemyPosition.x = _leftSideOfScreen;
+            transform.position = enemyPosition;
+        }
+
+        if (transform.position.y <= _bottomOfScreen)
         {
             enemyPosition.y = _topOfScreen;
             enemyPosition.x = Random.Range(_leftSideOfScreen, _rightSideOfScreen);
@@ -111,6 +140,20 @@ public class Enemy : MonoBehaviour
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
         _speed = _speed / 3;
         _audioSource.PlayOneShot(_explosion);
+    }
+
+    private void ZigZag(Vector3 motion)
+    {
+        if (_canZigZag)
+        {
+            // use sine to oscillate movement
+            motion.x = Mathf.Sin(Time.time * _zigAmount);
+            transform.Translate(new Vector3(motion.x, -1, 0) * Time.deltaTime * _speed);
+        }
+        else
+        {
+            transform.Translate(Vector3.down * Time.deltaTime * _speed);
+        }
     }
 
 }
