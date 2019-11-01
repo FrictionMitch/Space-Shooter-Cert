@@ -51,12 +51,19 @@ public class Enemy : MonoBehaviour
     private bool _canZigZag = true;
 
     [SerializeField]
+    private bool _enableShields = false;
+    [SerializeField]
+    private GameObject _enemyShield;
+
+    [SerializeField]
     private int _minZigAmount = 1, _maxZigAmount = 5;
     private int _zigAmount;
 
     // Start is called before the first frame update
     void Start()
     {
+        _enableShields = Random.value > 0.5f; // randomizes if shield is enabled or not
+        _enemyShield.SetActive(_enableShields);
         _zigAmount = Random.Range(_minZigAmount, _maxZigAmount);
         _audioSource = GetComponent<AudioSource>();
         _player = GameObject.Find("Player").GetComponent<Player>();
@@ -71,6 +78,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _enemyShield.SetActive(_enableShields);
         EnemyMovement();
         EnemyFire();
     }
@@ -114,7 +122,12 @@ public class Enemy : MonoBehaviour
     {
         switch (other.tag){
             case "Laser":
-                
+                if (_enableShields)
+                {
+                    _enableShields = false;
+                    Destroy(other.gameObject);
+                    return;
+                }
                 if (_player)
                 {
                     _player.AddScore(_points);
@@ -122,7 +135,14 @@ public class Enemy : MonoBehaviour
                 Destroy(other.gameObject);
                 EnemyDeath();
                 break;
+
             case "Player":
+                if (_enableShields)
+                {
+                    _enableShields = false;
+                    _player.Damage(_kamakazeDamage);
+                    return;
+                }
                 if (_player)
                 {
                     _player.Damage(_kamakazeDamage);
