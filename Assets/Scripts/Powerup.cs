@@ -92,6 +92,10 @@ public class Powerup : MonoBehaviour
                         // invert controls (negative powerup)
                         _player.InvertControls();
                         break;
+                    case 7:
+                        // heat seaker
+                        _player.EnableHeatSeeker();
+                        break;
                 }
             }
             Destroy(this.gameObject, 0.01f);

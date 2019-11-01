@@ -5,6 +5,9 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _player;
+
+    [SerializeField]
     private float _rotationSpeed = 3f;
     private float _randomRotationSpeed;
 
@@ -29,6 +32,7 @@ public class Asteroid : MonoBehaviour
     {
         // rotate around the z axis
         transform.Rotate(new Vector3(0, 0, 1) * Time.deltaTime * _randomRotationSpeed);
+        //RotateTowards();
     }
 
     void Explode()
@@ -45,5 +49,16 @@ public class Asteroid : MonoBehaviour
             _spawnManager.StartSpawning();
             Destroy(this.gameObject, _destroyDelay);
         }
+    }
+
+    void RotateTowards()
+    {
+        Vector3 distance = _player.transform.position - this.transform.position;
+
+        float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+
+        Quaternion rotation = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
+
+        transform.rotation = rotation;
     }
 }

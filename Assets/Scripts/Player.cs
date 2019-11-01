@@ -28,6 +28,9 @@ public class Player : MonoBehaviour
     private GameObject _tripleShot;
     private bool isTripleShotActive = false;
     private bool isUltraShotActive = false;
+    private bool isHeatSeekerActive = false;
+    [SerializeField]
+    private GameObject _heatSeeker;
     [SerializeField]
     private GameObject _minis;
     [SerializeField]
@@ -190,6 +193,10 @@ public class Player : MonoBehaviour
             {
                 projectile = Instantiate(_tripleShot, transform.position, Quaternion.identity);
             }
+            else if (isHeatSeekerActive)
+            {
+                projectile = Instantiate(_heatSeeker, transform.position, Quaternion.identity);
+            }
             else
             {
                 projectile = Instantiate(_singleProjectile, startPosition, Quaternion.identity);
@@ -271,6 +278,11 @@ public class Player : MonoBehaviour
         StartCoroutine(TripleShotRoutine());
     }
 
+    public void EnableHeatSeeker()
+    {
+        StartCoroutine(HeatSeekerRoutine());
+    }
+
     public void EnableSpeedBoost()
     {
         StartCoroutine(SpeedBoostRoutine());
@@ -298,6 +310,13 @@ public class Player : MonoBehaviour
         isTripleShotActive = true;
         yield return new WaitForSeconds(_secondsActive);
         isTripleShotActive = false;
+    }
+
+    IEnumerator HeatSeekerRoutine()
+    {
+        isHeatSeekerActive = true;
+        yield return new WaitForSeconds(_secondsActive);
+        isHeatSeekerActive = false;
     }
 
     // Secondary Powerup -- RARE
