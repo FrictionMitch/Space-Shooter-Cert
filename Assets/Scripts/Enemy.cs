@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
 
     [field: Tooltip("How far incoming projectile can be tracked")]
     [field: SerializeField]
-    public float _projectileRadar { get; private set; } = 5f;
+    public GameObject _rearLaserPosition { get; private set; }
 
 
 
@@ -101,6 +101,7 @@ public class Enemy : MonoBehaviour
         EnemyMovement();
         EnemyFire();
         DodgeProjectiles();
+        ShootBackwards();
     }
 
     void FixedUpdate()
@@ -259,7 +260,8 @@ public class Enemy : MonoBehaviour
     {
         if (_canDodge)
         {
-            RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(2f, 6), 0, Vector2.down, 10,9);
+            Vector2 laserRadar = new Vector2(2f, 6f);
+            RaycastHit2D hit = Physics2D.BoxCast(transform.position, laserRadar, 0, Vector2.down, 10, 9);
             if(hit.collider?.tag == "Laser")
             {
                 int leftRightModifier = 1;
@@ -286,6 +288,34 @@ public class Enemy : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, dodgePosition, dodgeSpeed * Time.deltaTime);
             yield return new WaitForSeconds(dodgeTime);
         }
+    }
+
+    private void ShootBackwards()
+    {
+        if (_canShootBackwards)
+        {
+            Vector2 rearRadar = new Vector2(2f, 6f);
+            //RaycastHit2D hit = Physics2D.BoxCast(transform.position, rearRadar, 0, Vector2.up, 10, 9);
+            RaycastHit2D playerHit = Physics2D.Raycast(_rearLaserPosition.transform.position, Vector2.up, 6, 1<<9);
+            Debug.DrawRay((_rearLaserPosition.transform.position), Vector2.up * 6, Color.green);
+
+            if (playerHit)
+            {
+                if (playerHit.collider?.tag == "Player")
+                {
+                    StartCoroutine(RearFireRoutine());
+                }
+            }
+        }
+    }
+
+    IEnumerator RearFireRoutine()
+    {
+        _canShootBackwards = false;
+        GameObject rearLaser = Instantiate(_enemyLaser, _rearLaserPosition.transform.position, Quaternion.identity);
+        rearLaser.transform.Rotate(0, 0, 180);
+        yield return new WaitForSeconds(0.5f);
+        _canShootBackwards = true;
     }
 
 }
