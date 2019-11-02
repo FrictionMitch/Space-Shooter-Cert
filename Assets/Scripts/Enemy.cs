@@ -8,6 +8,9 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 4f;
+    [SerializeField]
+    private float _rammingSpeed = 8f;
+    private float _currentSpeed;
 
     [SerializeField]
     private float _topOfScreen = 7.4f, _bottomOfScreen = -5.4f;
@@ -19,7 +22,9 @@ public class Enemy : MonoBehaviour
 
     [Header("Damage")]
     [SerializeField]
-    private int _shootDamage = 100, _kamakazeDamage = 200;
+    private int _shootDamage = 100;
+    [SerializeField]
+    private int _kamakazeDamage = 200;
     [SerializeField]
     private float _deathDelay = 2f;
 
@@ -39,6 +44,7 @@ public class Enemy : MonoBehaviour
     private float _lastFire; // cool down for normal rate of fire
     private float _lastPowerupFire; // cool down after shooting at powerup
 
+    [Space (10)]
     [SerializeField]
     private bool _canDodge = false;
 
@@ -47,6 +53,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private bool _isAggressive = false;
+    [SerializeField]
+    private float _rammingDistance = 5f;
 
     [SerializeField]
     private bool _canTargetPowerups = true;
@@ -68,6 +76,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _currentSpeed = _speed;
         _enableShields = Random.value > 0.5f; // randomizes if shield is enabled or not
         _enemyShield.SetActive(_enableShields);
         _zigAmount = Random.Range(_minZigAmount, _maxZigAmount);
@@ -165,7 +174,7 @@ public class Enemy : MonoBehaviour
         _anim.SetTrigger("EnemyDeathTrigger");
         Destroy(this.gameObject, _deathDelay);
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        _speed = _speed / 3;
+        _currentSpeed = _speed / 3;
         _audioSource.PlayOneShot(_explosion);
     }
 
@@ -175,11 +184,11 @@ public class Enemy : MonoBehaviour
         {
             // use sine to oscillate movement
             motion.x = Mathf.Sin(Time.time * _zigAmount);
-            transform.Translate(new Vector3(motion.x, -1, 0) * Time.deltaTime * _speed);
+            transform.Translate(new Vector3(motion.x, -1, 0) * Time.deltaTime * _currentSpeed);
         }
         else
         {
-            transform.Translate(Vector3.down * Time.deltaTime * _speed);
+            transform.Translate(Vector3.down * Time.deltaTime * _currentSpeed);
         }
     }
 
@@ -205,10 +214,34 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void RamPlayer()
+    {
+        Vector3 yOffset = new Vector3(0, 1, 0);
+
+        RaycastHit2D hitPlayer = Physics2D.Raycast((transform.position - yOffset), -Vector2.up, _rammingDistance);
+        Debug.DrawRay((transform.position - yOffset), -Vector2.up * _rammingDistance, Color.green);
+        if (hitPlayer)
+        {
+            if(hitPlayer.collider.tag == "Player")
+            {
+                if (_isAggressive)
+                {
+                    _canZigZag = false;
+                    _currentSpeed = _rammingSpeed;
+                }
+            }
+            else
+            {
+                _currentSpeed = _speed;
+            }
+        }
+    }
+
 
     void FixedUpdate()
     {
         TargetPowerup();
+        RamPlayer();
     }
 
 }

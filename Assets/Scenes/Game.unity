@@ -278,6 +278,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &214821291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 214821292}
+  m_Layer: 0
+  m_Name: Projectiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &214821292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214821291}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &340416670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,12 +1519,12 @@ PrefabInstance:
     - target: {fileID: 5690410705163650039, guid: 84e1dd260a4432a4a999dcfe3b79f4b9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.94
+      value: 3.13
       objectReference: {fileID: 0}
     - target: {fileID: 5690410705163650039, guid: 84e1dd260a4432a4a999dcfe3b79f4b9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.013
+      value: 6.52
       objectReference: {fileID: 0}
     - target: {fileID: 5690410705163650039, guid: 84e1dd260a4432a4a999dcfe3b79f4b9,
         type: 3}
@@ -1540,6 +1570,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8040640230981105023, guid: 84e1dd260a4432a4a999dcfe3b79f4b9,
+        type: 3}
+      propertyPath: _rammingDistance
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84e1dd260a4432a4a999dcfe3b79f4b9, type: 3}
@@ -1706,7 +1741,7 @@ PrefabInstance:
         type: 3}
       propertyPath: ProjectileParent
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 214821291}
     - target: {fileID: 6487133432669819759, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8,
         type: 3}
       propertyPath: _uiManager

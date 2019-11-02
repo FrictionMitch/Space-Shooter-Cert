@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
+  _rammingSpeed: 8
   _topOfScreen: 6
   _bottomOfScreen: -4
   _leftSideOfScreen: -9.5
@@ -164,11 +165,12 @@ MonoBehaviour:
   _fireDelay: 3
   _canDodge: 0
   _canShootBackwards: 0
-  _isAggressive: 0
+  _isAggressive: 1
+  _rammingDistance: 6
   _canTargetPowerups: 0
   _powerupVisibility: 15
   _canZigZag: 1
-  _enableShields: 1
+  _enableShields: 0
   _enemyShield: {fileID: 1255072871}
   _minZigAmount: 1
   _maxZigAmount: 5
