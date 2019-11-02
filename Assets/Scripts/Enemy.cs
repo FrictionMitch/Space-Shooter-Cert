@@ -36,7 +36,8 @@ public class Enemy : MonoBehaviour
     private GameObject _enemyLaser;
     [SerializeField]
     private float _fireDelay = 3f;
-    private float _lastFire;
+    private float _lastFire; // cool down for normal rate of fire
+    private float _lastPowerupFire; // cool down after shooting at powerup
 
     [SerializeField]
     private bool _canDodge = false;
@@ -45,7 +46,12 @@ public class Enemy : MonoBehaviour
     private bool _canShootBackwards = false;
 
     [SerializeField]
-    private bool _canTargetPowerups = false;
+    private bool _isAggressive = false;
+
+    [SerializeField]
+    private bool _canTargetPowerups = true;
+    [SerializeField]
+    private float _powerupVisibility = 10f;
 
     [SerializeField]
     private bool _canZigZag = true;
@@ -73,6 +79,7 @@ public class Enemy : MonoBehaviour
         }
         _anim = GetComponent<Animator>();
         _lastFire = 0;
+        _lastPowerupFire = 0;
     }
 
     // Update is called once per frame
@@ -174,6 +181,34 @@ public class Enemy : MonoBehaviour
         {
             transform.Translate(Vector3.down * Time.deltaTime * _speed);
         }
+    }
+
+    private void TargetPowerup()
+    {
+        //Cast a ray straight down.
+        Vector3 yOffset = new Vector3(0, 1, 0);
+
+        RaycastHit2D hit = Physics2D.Raycast((transform.position - yOffset), -Vector2.up, _powerupVisibility);
+        //Debug.DrawRay((transform.position - yOffset), -Vector2.up * _powerupVisibility, Color.green);
+        if (hit)
+        {
+            if (hit.collider.tag == "Powerup")
+            {
+                //print($"Shooting {hit.collider.name}");
+                if (Time.time > _lastPowerupFire)
+                {
+                    _lastPowerupFire = Time.time + _fireDelay;
+                    Instantiate(_enemyLaser, transform.position, Quaternion.identity);
+                }
+                Instantiate(_enemyLaser, transform.position, Quaternion.identity);
+            }
+        }
+    }
+
+
+    void FixedUpdate()
+    {
+        TargetPowerup();
     }
 
 }

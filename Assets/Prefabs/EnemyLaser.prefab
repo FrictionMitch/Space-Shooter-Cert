@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 728747127679356949}
   m_Layer: 0
   m_Name: EnemyLaser
-  m_TagString: Untagged
+  m_TagString: Enemy Laser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,11 +104,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -5739562888624720093, guid: ba3f56d8aa8e07249b837024fd2199ad,
-        type: 3}
-      propertyPath: _speed
-      value: -20
-      objectReference: {fileID: 0}
     - target: {fileID: 5794249641573713202, guid: ba3f56d8aa8e07249b837024fd2199ad,
         type: 3}
       propertyPath: m_Color.r
@@ -118,6 +113,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5739562888624720093, guid: ba3f56d8aa8e07249b837024fd2199ad,
+        type: 3}
+      propertyPath: _speed
+      value: -20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba3f56d8aa8e07249b837024fd2199ad, type: 3}
@@ -199,11 +199,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -5739562888624720093, guid: ba3f56d8aa8e07249b837024fd2199ad,
-        type: 3}
-      propertyPath: _speed
-      value: -20
-      objectReference: {fileID: 0}
     - target: {fileID: 5794249641573713202, guid: ba3f56d8aa8e07249b837024fd2199ad,
         type: 3}
       propertyPath: m_Color.r
@@ -213,6 +208,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5739562888624720093, guid: ba3f56d8aa8e07249b837024fd2199ad,
+        type: 3}
+      propertyPath: _speed
+      value: -20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba3f56d8aa8e07249b837024fd2199ad, type: 3}

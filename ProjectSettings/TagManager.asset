@@ -9,6 +9,7 @@ TagManager:
   - Shield
   - Enemy Laser
   - Mini
+  - Powerup
   layers:
   - Default
   - TransparentFX

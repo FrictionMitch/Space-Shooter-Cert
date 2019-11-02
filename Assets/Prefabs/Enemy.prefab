@@ -164,7 +164,9 @@ MonoBehaviour:
   _fireDelay: 3
   _canDodge: 0
   _canShootBackwards: 0
+  _isAggressive: 0
   _canTargetPowerups: 0
+  _powerupVisibility: 15
   _canZigZag: 1
   _enableShields: 1
   _enemyShield: {fileID: 1255072871}

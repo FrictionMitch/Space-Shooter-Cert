@@ -1804,6 +1804,10 @@ PrefabInstance:
       propertyPath: isMini
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 142391726, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1792354169, guid: ffeabcfbedb968144bf2a3b9bd4d7ad8, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
