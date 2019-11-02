@@ -73,6 +73,13 @@ public class Enemy : MonoBehaviour
     private int _minZigAmount = 1, _maxZigAmount = 5;
     private int _zigAmount;
 
+    [field: Tooltip("How far incoming projectile can be tracked")]
+    [field: SerializeField]
+    public float _projectileRadar { get; private set; } = 5f;
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,11 +88,7 @@ public class Enemy : MonoBehaviour
         _enemyShield.SetActive(_enableShields);
         _zigAmount = Random.Range(_minZigAmount, _maxZigAmount);
         _audioSource = GetComponent<AudioSource>();
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        if (!_player)
-        {
-            Debug.Log("Player is null");
-        }
+        _player = GameObject.Find("Player")?.GetComponent<Player>();
         _anim = GetComponent<Animator>();
         _lastFire = 0;
         _lastPowerupFire = 0;
@@ -97,6 +100,13 @@ public class Enemy : MonoBehaviour
         _enemyShield.SetActive(_enableShields);
         EnemyMovement();
         EnemyFire();
+        DodgeProjectiles();
+    }
+
+    void FixedUpdate()
+    {
+        TargetPowerup();
+        RamPlayer();
     }
 
     private void EnemyMovement()
@@ -216,18 +226,26 @@ public class Enemy : MonoBehaviour
 
     private void RamPlayer()
     {
-        Vector3 yOffset = new Vector3(0, 1, 0);
-
-        RaycastHit2D hitPlayer = Physics2D.Raycast((transform.position - yOffset), -Vector2.up, _rammingDistance);
-        Debug.DrawRay((transform.position - yOffset), -Vector2.up * _rammingDistance, Color.green);
-        if (hitPlayer)
+        if (_player)
         {
-            if(hitPlayer.collider.tag == "Player")
+            if(transform.position.y > _player.transform.position.y)
             {
-                if (_isAggressive)
+
+                Vector3 yOffset = new Vector3(0, 1, 0);
+
+                RaycastHit2D hitPlayer = Physics2D.Raycast((transform.position - yOffset), -Vector2.up, _rammingDistance);
+                //Debug.DrawRay((transform.position - yOffset), -Vector2.up * _rammingDistance, Color.green);
+                if (hitPlayer)
                 {
-                    _canZigZag = false;
-                    _currentSpeed = _rammingSpeed;
+                    if(hitPlayer.collider.tag == "Player")
+                    {
+                        if (_isAggressive)
+                        {
+                            _canZigZag = false;
+                            _currentSpeed = _rammingSpeed;
+                        }
+                
+                    }
                 }
             }
             else
@@ -237,11 +255,37 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
-    void FixedUpdate()
+    private void DodgeProjectiles()
     {
-        TargetPowerup();
-        RamPlayer();
+        if (_canDodge)
+        {
+            RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(2f, 6), 0, Vector2.down, 10,9);
+            if(hit.collider?.tag == "Laser")
+            {
+                int leftRightModifier = 1;
+                if(hit.transform.position.x > transform.position.x) // is the laser left or right of the enemy
+                {
+                    leftRightModifier = -1;
+                }
+                else
+                {
+                    leftRightModifier = 1;
+                }
+                StartCoroutine(DodgeProjectileRoutine(0.5f, leftRightModifier));
+            }
+        }
+    }
+
+    IEnumerator DodgeProjectileRoutine(float dodgeTime, int horizMovement)
+    {
+        {
+            float dodgeAmount = 2f;
+            float dodgeSpeed = 150f;
+            Vector3 dodgePosition = transform.position;
+            dodgePosition.x += (dodgeAmount * horizMovement);
+            transform.position = Vector3.MoveTowards(transform.position, dodgePosition, dodgeSpeed * Time.deltaTime);
+            yield return new WaitForSeconds(dodgeTime);
+        }
     }
 
 }

@@ -23,7 +23,10 @@ public class Powerup : MonoBehaviour
 
     private void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        //var first = person?.FirstName;
+        //_player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        _player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
+
     }
 
 
@@ -111,6 +114,9 @@ public class Powerup : MonoBehaviour
     {
         //_speed = _magnetSpeed;
         float attractRate = _magnetSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, attractRate);
+        if (_player)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, attractRate);
+        }
     }
 }
