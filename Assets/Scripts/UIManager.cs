@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private float turboFill = 5f;
 
+    private SpawnManager _spawnManager;
 
     private bool _isGameOver = false;
 
@@ -39,6 +40,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _spawnManager = GameObject.FindObjectOfType<SpawnManager>();
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
     }
@@ -100,6 +102,7 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            _spawnManager.ResetCounter();
         }
         if (Input.GetKeyDown(KeyCode.N))
         {

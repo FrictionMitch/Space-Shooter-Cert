@@ -21,22 +21,36 @@ public class SpawnManager : MonoBehaviour
 
     private bool _stopSpawning = false;
 
+    [SerializeField]
+    private int _wave = 1;
+    [SerializeField]
+    private int _waveMultiplier = 10;
+
+    private int _enemiesDestroyed = 0;
+
+    private int _enemiesNeededForNextWave { get; set; }
+
+    private int _totalEnemiesSpawned { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
-
+        ResetCounter();
     }
 
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+
+        print(_stopSpawning);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        print($"Enemies Destroyed: {_enemiesDestroyed} TotalEnemiesNeeded: {_enemiesNeededForNextWave}");
+        _enemiesNeededForNextWave = _waveMultiplier * _wave;
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -47,13 +61,25 @@ public class SpawnManager : MonoBehaviour
             Vector3 spawnPosition = Vector3.zero;
             spawnPosition.y = _startPosition;
             spawnPosition.x = Random.Range(_leftSide, _rightSide);
-            GameObject enemy = Instantiate(_enemy, spawnPosition, Quaternion.identity);
-            if (!enemyContainer)
-            {
-                enemyContainer = new GameObject("Enemy Container");
+            if(_totalEnemiesSpawned < _enemiesNeededForNextWave){
+                GameObject enemy = Instantiate(_enemy, spawnPosition, Quaternion.identity);
+                _totalEnemiesSpawned++;
+                if (!enemyContainer)
+                {
+                    enemyContainer = new GameObject("Enemy Container");
+                }
+                enemyContainer.transform.parent = this.transform;
+                enemy.transform.parent = enemyContainer.transform;
             }
-            enemyContainer.transform.parent = this.transform;
-            enemy.transform.parent = enemyContainer.transform;
+            else
+            {
+                _stopSpawning = true;
+                if (_enemiesDestroyed >= _enemiesNeededForNextWave)
+                {
+                    StartCoroutine(NextWaveRoutine());
+                    _stopSpawning = false;
+                }
+            }
         }
     }
 
@@ -74,5 +100,30 @@ public class SpawnManager : MonoBehaviour
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
+    }
+
+    IEnumerator NextWaveRoutine()
+    {
+        //if (_enemiesDestroyed >= _enemiesNeededForNextWave)
+        //{
+            _wave++;
+            _enemiesDestroyed = 0;
+            _totalEnemiesSpawned = 0;
+            yield return new WaitForSeconds(3f);
+            _stopSpawning = false;
+        //}
+    }
+
+    public void SpawnedEnemyDestroyed()
+    {
+        _enemiesDestroyed++;
+    }
+
+    public void ResetCounter()
+    {
+        _stopSpawning = false;
+        _wave = 1;
+        _enemiesDestroyed = 0;
+        _totalEnemiesSpawned = 0;
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private SpawnManager _spawnManager;
+
     [SerializeField]
     private float _speed = 4f;
     [SerializeField]
@@ -83,6 +85,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _spawnManager = GameObject.FindObjectOfType<SpawnManager>();
         _currentSpeed = _speed;
         _enableShields = Random.value > 0.5f; // randomizes if shield is enabled or not
         _enemyShield.SetActive(_enableShields);
@@ -182,6 +185,7 @@ public class Enemy : MonoBehaviour
 
     private void EnemyDeath()
     {
+        _spawnManager.SpawnedEnemyDestroyed();
         _anim.SetTrigger("EnemyDeathTrigger");
         Destroy(this.gameObject, _deathDelay);
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
@@ -297,7 +301,7 @@ public class Enemy : MonoBehaviour
             Vector2 rearRadar = new Vector2(2f, 6f);
             //RaycastHit2D hit = Physics2D.BoxCast(transform.position, rearRadar, 0, Vector2.up, 10, 9);
             RaycastHit2D playerHit = Physics2D.Raycast(_rearLaserPosition.transform.position, Vector2.up, 6, 1<<9);
-            Debug.DrawRay((_rearLaserPosition.transform.position), Vector2.up * 6, Color.green);
+            //Debug.DrawRay((_rearLaserPosition.transform.position), Vector2.up * 6, Color.green);
 
             if (playerHit)
             {
