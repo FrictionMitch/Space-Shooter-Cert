@@ -82,6 +82,11 @@ public class Enemy : MonoBehaviour
     [field: SerializeField]
     public GameObject _rearLaserPosition { get; private set; }
 
+    [SerializeField]
+    private bool _isBoss = false;
+    [SerializeField]
+    private int _bossHealth = 1;
+
 
 
 
@@ -103,18 +108,25 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _enemyShield.SetActive(_enableShields);
-        EnemyMovement();
-        EnemyFire();
-        DodgeProjectiles();
-        ShootBackwards();
-        RotateTowardsPlayer();
+        if (!_isBoss)
+        {
+            _enemyShield.SetActive(_enableShields);
+            EnemyMovement();
+            EnemyFire();
+            DodgeProjectiles();
+            ShootBackwards();
+            RotateTowardsPlayer();
+        }
+        BossDeath();
     }
 
     void FixedUpdate()
     {
-        TargetPowerup();
-        RamPlayer();
+        if (!_isBoss)
+        {
+            TargetPowerup();
+            RamPlayer();
+        }
     }
 
     private void EnemyMovement()
@@ -154,38 +166,46 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        switch (other.tag){
-            case "Laser":
-                if (_enableShields)
-                {
-                    _enableShields = false;
+        if (!_isBoss)
+        {
+            switch (other.tag){
+                case "Laser":
+                    if (_enableShields)
+                    {
+                        _enableShields = false;
+                        Destroy(other.gameObject);
+                        return;
+                    }
+                    if (_player)
+                    {
+                        _player.AddScore(_points);
+                    }
                     Destroy(other.gameObject);
-                    return;
-                }
-                if (_player)
-                {
-                    _player.AddScore(_points);
-                }
-                Destroy(other.gameObject);
-                EnemyDeath();
-                break;
+                    EnemyDeath();
+                    break;
 
-            case "Player":
-                if (_enableShields)
-                {
-                    _enableShields = false;
-                    _player.Damage(_kamakazeDamage);
-                    return;
-                }
-                if (_player)
-                {
-                    _player.Damage(_kamakazeDamage);
-                }
-                EnemyDeath();
-                break;
-                
+                case "Player":
+                    if (_enableShields)
+                    {
+                        _enableShields = false;
+                        _player.Damage(_kamakazeDamage);
+                        return;
+                    }
+                    if (_player)
+                    {
+                        _player.Damage(_kamakazeDamage);
+                    }
+                    EnemyDeath();
+                    break;
+            }
+        }
+        else
+        {
+            Destroy(other.gameObject);
         }
     }
+
+
 
     private void EnemyDeath()
     {
@@ -344,6 +364,19 @@ public class Enemy : MonoBehaviour
                 // rotate
                 transform.rotation = rotation;
             }
+        }
+    }
+
+    public void DamageBoss()
+    {
+        _bossHealth--;
+    }
+
+    private void BossDeath()
+    {
+        if(_bossHealth <= 0)
+        {
+            Destroy(this.gameObject);
         }
     }
 

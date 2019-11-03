@@ -37,6 +37,13 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private int _bossWave = 3;
 
+    [SerializeField]
+    private GameObject _boss;
+
+    [SerializeField]
+    private float _bossStartSpeed = 20f;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +94,7 @@ public class SpawnManager : MonoBehaviour
                     _wave++;
                     if(_wave == _bossWave)
                     {
+                        _stopSpawning = true;
                         BossBattle();
                     }
                     else
@@ -146,5 +154,6 @@ public class SpawnManager : MonoBehaviour
     {
         _stopSpawning = true;
         uIManager.SetWaveText("BOSS BATTLE");
+        _boss.SetActive(true);
     }
 }

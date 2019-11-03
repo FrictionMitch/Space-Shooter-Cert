@@ -1110,7 +1110,9 @@ MonoBehaviour:
   _rightSide: 9.4
   _wave: 1
   _waveMultiplier: 1
-  _bossWave: 3
+  _bossWave: 2
+  _boss: {fileID: 8191601679625320610}
+  _bossStartSpeed: 1000
 --- !u!1 &867610059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,6 +1339,76 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1335717648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1335717649}
+  - component: {fileID: 1335717651}
+  - component: {fileID: 1335717650}
+  m_Layer: 0
+  m_Name: WeakSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1335717649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335717648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.085, y: 0.824, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7558124145205563555}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1335717650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335717648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aea1706fc8a5bf4fa6ada6545b6619c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &1335717651
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335717648}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1394363609
 GameObject:
   m_ObjectHideFlags: 0
@@ -2206,7 +2278,7 @@ MonoBehaviour:
   _bottomOfScreen: -4
   _leftSideOfScreen: -9.5
   _rightSideOfScreen: 9.5
-  _points: 10
+  _points: 1000
   _shootDamage: 100
   _kamakazeDamage: 200
   _deathDelay: 2
@@ -2227,6 +2299,8 @@ MonoBehaviour:
   _minZigAmount: 1
   _maxZigAmount: 5
   <_rearLaserPosition>k__BackingField: {fileID: 2745999224294937607}
+  _isBoss: 1
+  _bossHealth: 1
 --- !u!1001 &5346253449248169994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2322,7 +2396,7 @@ Animator:
   m_GameObject: {fileID: 8191601679625320610}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c869aec494ac84a4cbe21fc40a4419e3, type: 2}
+  m_Controller: {fileID: 9100000, guid: d024d83b6f55f3642a11d7e39c093178, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2524,10 +2598,11 @@ Transform:
   m_GameObject: {fileID: 8191601679625320610}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0.1, y: 11.3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 2745999224382764860}
   - {fileID: 2745999224294937600}
+  - {fileID: 1335717649}
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
@@ -2695,15 +2770,17 @@ GameObject:
   - component: {fileID: 2745999224434884455}
   - component: {fileID: 8191601679625320612}
   - component: {fileID: 8191601679625320611}
+  - component: {fileID: 8191601679625320614}
+  - component: {fileID: 8191601679625320613}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!58 &8191601679625320611
-CircleCollider2D:
+  m_IsActive: 0
+--- !u!61 &8191601679625320611
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2715,9 +2792,19 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.106898785, y: 0}
+  m_Offset: {x: -0.011005521, y: -0.64544666}
+  m_SpriteTilingProperty:
+    border: {x: 0.5, y: 0.06, z: 0.55, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.65, y: 6.65}
+    newSize: {x: 6.65, y: 6.65}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 3.0456963
+  m_Size: {x: 0.9031277, y: 3.749842}
+  m_EdgeRadius: 0
 --- !u!212 &8191601679625320612
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2767,3 +2854,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &8191601679625320613
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8191601679625320610}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.4991107, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0.5, y: 0.06, z: 0.55, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.65, y: 6.65}
+    newSize: {x: 6.65, y: 6.65}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5489817, y: 6.65}
+  m_EdgeRadius: 0
+--- !u!61 &8191601679625320614
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8191601679625320610}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 1.407171, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0.5, y: 0.06, z: 0.55, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.65, y: 6.65}
+    newSize: {x: 6.65, y: 6.65}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.542122, y: 6.65}
+  m_EdgeRadius: 0
