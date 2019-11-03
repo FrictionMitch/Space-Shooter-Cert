@@ -98,6 +98,7 @@ public class Powerup : MonoBehaviour
                     case 7:
                         // heat seaker
                         _player.EnableHeatSeeker();
+                        _player.FillAmmo();
                         break;
                 }
             }

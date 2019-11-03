@@ -34,6 +34,9 @@ public class SpawnManager : MonoBehaviour
 
     private int _totalEnemiesSpawned { get; set; }
 
+    [SerializeField]
+    private int _bossWave = 3;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,14 +58,7 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         _enemiesNeededForNextWave = _waveMultiplier * _wave;
-        if (_stopSpawning)
-        {
-            
-        }
-        else
-        {
-            
-        }
+
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -88,8 +84,16 @@ public class SpawnManager : MonoBehaviour
                 _stopSpawning = true;
                 if (_enemiesDestroyed >= _enemiesNeededForNextWave)
                 {
-                    StartCoroutine(NextWaveRoutine());
-                    _stopSpawning = false;
+                    _wave++;
+                    if(_wave == _bossWave)
+                    {
+                        BossBattle();
+                    }
+                    else
+                    {
+                        StartCoroutine(NextWaveRoutine());
+                        _stopSpawning = false;
+                    }
                 }
             }
         }
@@ -116,7 +120,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator NextWaveRoutine()
     {
-        _wave++;
+        
         _enemiesDestroyed = 0;
         _totalEnemiesSpawned = 0;
         uIManager.SetWaveText($"Wave: {_wave}");
@@ -136,5 +140,11 @@ public class SpawnManager : MonoBehaviour
         _wave = 1;
         _enemiesDestroyed = 0;
         _totalEnemiesSpawned = 0;
+    }
+
+    private void BossBattle()
+    {
+        _stopSpawning = true;
+        uIManager.SetWaveText("BOSS BATTLE");
     }
 }

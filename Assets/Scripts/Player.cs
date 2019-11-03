@@ -385,7 +385,6 @@ public class Player : MonoBehaviour
     {
         if(other.tag == "Enemy Laser")
         {
-            print("Hit by enemy laser");
             Damage(other.GetComponent<Laser>().GetLaserDamage());
             Destroy(other.gameObject);
         }

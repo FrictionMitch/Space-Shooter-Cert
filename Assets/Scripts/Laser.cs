@@ -33,7 +33,7 @@ public class Laser : MonoBehaviour
     void Update()
     {
         //if (!_canTrack || _enemies[0]?.GetComponent<BoxCollider2D>()?.enabled == false)
-        if (!_canTrack || _enemies[0] == null)
+        if (!_canTrack)
         {
             if(gameObject.tag == "Enemy Laser")
             {
@@ -53,12 +53,22 @@ public class Laser : MonoBehaviour
             }
             else
             {
-                if(_enemies[0] == null)
+                if(_enemies == null)
                 {
                     transform.Translate(Vector3.up * Time.deltaTime * _speed);
                 }
-                RotateTowards(_enemies[0], 90);
-                transform.position = Vector3.MoveTowards(this.transform.position, _enemies[0].transform.position, _speed * Time.deltaTime);
+                else
+                {
+                    if (_enemies.Length > 0)
+                    {
+                        RotateTowards(_enemies[0], 90);
+                        transform.position = Vector3.MoveTowards(this.transform.position, _enemies[0].transform.position, _speed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        transform.Translate(Vector3.up * Time.deltaTime * _speed);
+                    }
+                }
             }
         }
         SelfDestruct();
