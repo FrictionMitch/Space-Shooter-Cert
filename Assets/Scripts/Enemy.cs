@@ -86,6 +86,12 @@ public class Enemy : MonoBehaviour
     private bool _isBoss = false;
     [SerializeField]
     private int _bossHealth = 1;
+    [SerializeField]
+    private float _bossFireDelay = 1f;
+    [SerializeField]
+    private GameObject _bossExplosion;
+
+    private bool _isAlive = true;
 
 
 
@@ -93,16 +99,18 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _isAlive = true;
         _spawnManager = GameObject.FindObjectOfType<SpawnManager>();
         _currentSpeed = _speed;
         _enableShields = Random.value > 0.5f; // randomizes if shield is enabled or not
-        _enemyShield.SetActive(_enableShields);
+        _enemyShield?.SetActive(_enableShields);
         _zigAmount = Random.Range(_minZigAmount, _maxZigAmount);
         _audioSource = GetComponent<AudioSource>();
         _player = GameObject.Find("Player")?.GetComponent<Player>();
         _anim = GetComponent<Animator>();
         _lastFire = 0;
         _lastPowerupFire = 0;
+        
     }
 
     // Update is called once per frame
@@ -112,12 +120,19 @@ public class Enemy : MonoBehaviour
         {
             _enemyShield.SetActive(_enableShields);
             EnemyMovement();
-            EnemyFire();
+            if (_isAlive)
+            {
+                EnemyFire(_fireDelay);
+            }
             DodgeProjectiles();
             ShootBackwards();
             RotateTowardsPlayer();
         }
-        BossDeath();
+        else
+        {
+            BossDeath();
+            EnemyFire(_bossFireDelay);
+        }
     }
 
     void FixedUpdate()
@@ -155,14 +170,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void EnemyFire()
+    private void EnemyFire( float delay)
     {
         if(Time.time > _lastFire)
         {
-            _lastFire = Time.time + _fireDelay;
+            _lastFire = Time.time + delay;
             GameObject enemyFire = Instantiate(_enemyLaser, transform.position, Quaternion.identity);
         }
     }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -170,6 +186,7 @@ public class Enemy : MonoBehaviour
         {
             switch (other.tag){
                 case "Laser":
+                    
                     if (_enableShields)
                     {
                         _enableShields = false;
@@ -209,6 +226,7 @@ public class Enemy : MonoBehaviour
 
     private void EnemyDeath()
     {
+        _isAlive = false;
         _spawnManager.SpawnedEnemyDestroyed();
         _anim.SetTrigger("EnemyDeathTrigger");
         Destroy(this.gameObject, _deathDelay);
@@ -376,7 +394,17 @@ public class Enemy : MonoBehaviour
     {
         if(_bossHealth <= 0)
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, 3f);
+            AudioSource.PlayClipAtPoint(_explosion, Camera.main.transform.position);
+            Instantiate(_bossExplosion, transform.position, Quaternion.identity);
+        }
+    }
+
+    private void BossShoot()
+    {
+        if (_anim.GetCurrentAnimatorStateInfo(0).IsName("BossStrafe_anim"))
+        {
+            print("fuck off");
         }
     }
 

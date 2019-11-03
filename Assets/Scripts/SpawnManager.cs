@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _enemy;
+    private GameObject[] _enemy;
     [SerializeField]
     private GameObject[] PowerUps;
 
@@ -77,7 +77,9 @@ public class SpawnManager : MonoBehaviour
             spawnPosition.y = _startPosition;
             spawnPosition.x = Random.Range(_leftSide, _rightSide);
             if(_totalEnemiesSpawned < _enemiesNeededForNextWave){
-                GameObject enemy = Instantiate(_enemy, spawnPosition, Quaternion.identity);
+                // random enemy
+                int randomEnemy = Random.Range(0, _enemy.Length);
+                GameObject enemy = Instantiate(_enemy[randomEnemy], spawnPosition, Quaternion.identity);
                 _totalEnemiesSpawned++;
                 if (!enemyContainer)
                 {
@@ -111,7 +113,12 @@ public class SpawnManager : MonoBehaviour
     {
         while (!_stopSpawning)
         {
+            
             int randomPowerup = Random.Range(0, PowerUps.Length);
+            if (_wave == _bossWave)
+            {
+                randomPowerup = Random.Range(3, 5);
+            }
             yield return new WaitForSeconds(Random.Range(_minPowerup, _maxPowerup));
             Vector3 tripleShotPosition = new Vector3(Random.Range(_leftSide, _rightSide), _topOfScreen, transform.position.z);
             if (PowerUps[randomPowerup])
