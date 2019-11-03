@@ -1119,8 +1119,8 @@ MonoBehaviour:
   _leftSide: -9.4
   _rightSide: 9.4
   _wave: 1
-  _waveMultiplier: 5
-  _bossWave: 3
+  _waveMultiplier: 1
+  _bossWave: 2
   _boss: {fileID: 8191601679625320610}
   _bossStartSpeed: 1000
 --- !u!1 &867610059
