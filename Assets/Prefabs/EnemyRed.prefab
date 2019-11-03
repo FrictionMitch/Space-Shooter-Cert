@@ -207,6 +207,10 @@ MonoBehaviour:
   _minZigAmount: 1
   _maxZigAmount: 5
   <_rearLaserPosition>k__BackingField: {fileID: 2402859494720089644}
+  _isBoss: 0
+  _bossHealth: 1
+  _bossFireDelay: 1
+  _bossExplosion: {fileID: 0}
 --- !u!212 &6085178828432964935
 SpriteRenderer:
   m_ObjectHideFlags: 0

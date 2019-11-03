@@ -61,7 +61,7 @@ MonoBehaviour:
   _kamakazeDamage: 200
   _deathDelay: 2
   _explosion: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
-  _enemyLaser: {fileID: 3281633648518123836, guid: 5823f0a3e38afa541b7d6c6146d68ccb,
+  _enemyLaser: {fileID: 2043493869354884816, guid: 52981b0d2a6ad4a4881ed231dda9693d,
     type: 3}
   _fireDelay: 3
   _canDodge: 0
@@ -77,6 +77,10 @@ MonoBehaviour:
   _minZigAmount: 1
   _maxZigAmount: 5
   <_rearLaserPosition>k__BackingField: {fileID: 5346253448649638037}
+  _isBoss: 0
+  _bossHealth: 1
+  _bossFireDelay: 1
+  _bossExplosion: {fileID: 0}
 --- !u!212 &4547504441086333950
 SpriteRenderer:
   m_ObjectHideFlags: 0
