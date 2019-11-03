@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Player _player;
     [SerializeField]
+    private Text _waveText;
+    [SerializeField]
     private float _flickerDelay = 0.5f;
 
     [SerializeField]
@@ -154,6 +156,11 @@ public class UIManager : MonoBehaviour
         {
             _ammoText.GetComponent<Animator>().SetBool("AmmoEmpty", false);
         }
+    }
+
+    public void SetWaveText(string waveText)
+    {
+        _waveText.text = waveText;
     }
 
 }

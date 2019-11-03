@@ -67,6 +67,9 @@ public class Enemy : MonoBehaviour
     private bool _canZigZag = true;
 
     [SerializeField]
+    private bool _canRotateTowards = false;
+
+    [SerializeField]
     private bool _enableShields = false;
     [SerializeField]
     private GameObject _enemyShield;
@@ -105,6 +108,7 @@ public class Enemy : MonoBehaviour
         EnemyFire();
         DodgeProjectiles();
         ShootBackwards();
+        RotateTowardsPlayer();
     }
 
     void FixedUpdate()
@@ -144,7 +148,7 @@ public class Enemy : MonoBehaviour
         if(Time.time > _lastFire)
         {
             _lastFire = Time.time + _fireDelay;
-            Instantiate(_enemyLaser, transform.position, Quaternion.identity);
+            GameObject enemyFire = Instantiate(_enemyLaser, transform.position, Quaternion.identity);
         }
     }
 
@@ -203,7 +207,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            transform.Translate(Vector3.down * Time.deltaTime * _currentSpeed);
+            transform.Translate(Vector3.down * Time.deltaTime * _currentSpeed, Space.World);
         }
     }
 
@@ -224,7 +228,7 @@ public class Enemy : MonoBehaviour
                     _lastPowerupFire = Time.time + _fireDelay;
                     Instantiate(_enemyLaser, transform.position, Quaternion.identity);
                 }
-                Instantiate(_enemyLaser, transform.position, Quaternion.identity);
+                //Instantiate(_enemyLaser, transform.position, Quaternion.identity);
             }
         }
     }
@@ -320,6 +324,27 @@ public class Enemy : MonoBehaviour
         rearLaser.transform.Rotate(0, 0, 180);
         yield return new WaitForSeconds(0.5f);
         _canShootBackwards = true;
+    }
+
+    private void RotateTowardsPlayer()
+    {
+        if (_player)
+        {
+            if (_canRotateTowards)
+            {
+                // distance
+                Vector3 distance = _player.transform.position - this.transform.position;
+
+                // angle
+                float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+
+                // quaternion
+                Quaternion rotation = Quaternion.AngleAxis(angle + 90, new Vector3(0, 0, 1));
+
+                // rotate
+                transform.rotation = rotation;
+            }
+        }
     }
 
 }

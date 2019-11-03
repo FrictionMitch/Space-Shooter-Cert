@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1255072872
 Transform:
   m_ObjectHideFlags: 0
@@ -195,12 +195,13 @@ MonoBehaviour:
     type: 3}
   _fireDelay: 3
   _canDodge: 0
-  _canShootBackwards: 1
+  _canShootBackwards: 0
   _isAggressive: 0
   _rammingDistance: 6
-  _canTargetPowerups: 0
+  _canTargetPowerups: 1
   _powerupVisibility: 15
   _canZigZag: 0
+  _canRotateTowards: 0
   _enableShields: 0
   _enemyShield: {fileID: 1255072871}
   _minZigAmount: 1

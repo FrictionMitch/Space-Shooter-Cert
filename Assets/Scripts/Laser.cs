@@ -17,23 +17,49 @@ public class Laser : MonoBehaviour
 
     private GameObject[] _enemies;
 
+    private GameObject _player;
+
+    [SerializeField]
+    private bool _isEnemyLaser = false;
+
     // Start is called before the first frame update
     void Start()
     {
         _enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_canTrack || _enemies[0].GetComponent<BoxCollider2D>().enabled == false)
+        //if (!_canTrack || _enemies[0]?.GetComponent<BoxCollider2D>()?.enabled == false)
+        if (!_canTrack || _enemies[0] == null)
         {
-            transform.Translate(Vector3.up * Time.deltaTime * _speed);
+            if(gameObject.tag == "Enemy Laser")
+            {
+                transform.Translate(Vector3.up * Time.deltaTime * _speed);
+            }
+            if(gameObject.tag == "Laser")
+            {
+                transform.Translate(Vector3.down * Time.deltaTime * _speed);
+            }
         }
         else
         {
-            RotateTowards();
-            transform.position = Vector3.MoveTowards(this.transform.position, _enemies[0].transform.position, _speed * Time.deltaTime);
+            if (_isEnemyLaser)
+            {
+                RotateTowards(_player, 90);
+                transform.Translate(Vector3.down * Time.deltaTime * (_speed/ 5));
+            }
+            else
+            {
+                if(_enemies[0] == null)
+                {
+                    transform.Translate(Vector3.up * Time.deltaTime * _speed);
+                }
+                RotateTowards(_enemies[0], 90);
+                transform.position = Vector3.MoveTowards(this.transform.position, _enemies[0].transform.position, _speed * Time.deltaTime);
+            }
         }
         SelfDestruct();
     }
@@ -54,13 +80,14 @@ public class Laser : MonoBehaviour
         }
     }
 
-    void RotateTowards()
+    void RotateTowards(GameObject target, float angleOffset)
     {
-        if(_enemies != null)
+        if(_enemies != null && target != null)
         {
-            Vector3 distance = _enemies[0].transform.position - this.transform.position;
+            //Vector3 distance = _enemies[0].transform.position - this.transform.position;
+            Vector3 distance = target.transform.position - this.transform.position;
             float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(angle - 90, new Vector3(0, 0, 1));
+            Quaternion rotation = Quaternion.AngleAxis(angle - angleOffset, new Vector3(0, 0, 1));
             transform.rotation = rotation;
         }
     }

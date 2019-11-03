@@ -21,6 +21,8 @@ public class SpawnManager : MonoBehaviour
 
     private bool _stopSpawning = false;
 
+    private UIManager uIManager;
+
     [SerializeField]
     private int _wave = 1;
     [SerializeField]
@@ -35,22 +37,32 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _stopSpawning = true;
+        uIManager = GameObject.FindObjectOfType<UIManager>();
         ResetCounter();
+        uIManager.SetWaveText($"Wave: {_wave}");
     }
 
     public void StartSpawning()
     {
+        _stopSpawning = false;
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
-
-        print(_stopSpawning);
+        uIManager.SetWaveText("");
     }
 
     // Update is called once per frame
     void Update()
     {
-        print($"Enemies Destroyed: {_enemiesDestroyed} TotalEnemiesNeeded: {_enemiesNeededForNextWave}");
         _enemiesNeededForNextWave = _waveMultiplier * _wave;
+        if (_stopSpawning)
+        {
+            
+        }
+        else
+        {
+            
+        }
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -104,14 +116,13 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator NextWaveRoutine()
     {
-        //if (_enemiesDestroyed >= _enemiesNeededForNextWave)
-        //{
-            _wave++;
-            _enemiesDestroyed = 0;
-            _totalEnemiesSpawned = 0;
-            yield return new WaitForSeconds(3f);
-            _stopSpawning = false;
-        //}
+        _wave++;
+        _enemiesDestroyed = 0;
+        _totalEnemiesSpawned = 0;
+        uIManager.SetWaveText($"Wave: {_wave}");
+        yield return new WaitForSeconds(3f);
+        _stopSpawning = false;
+        uIManager.SetWaveText("");
     }
 
     public void SpawnedEnemyDestroyed()
